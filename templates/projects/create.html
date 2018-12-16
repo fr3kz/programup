@@ -1,0 +1,10 @@
+  {% include 'partials/_alerts.html' %}
+<form method="post" action="{% url 'create' %}"enctype="multipart/form-data" >
+  {% csrf_token %}
+  <input type="file" name="files" >
+  desc<input type="text" name="description" >
+  git<input type="text" name="github" >
+  title<input type="text" name="title" >
+  <input type="hidden" name="user_id" value="{{user.id}}" >
+  <button type="submit">Submit</button>
+</form>

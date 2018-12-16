@@ -3,8 +3,8 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Project(models.Model):
     thumbnail = models.ImageField(upload_to='images/projects')
-    users = models.ForeignKey(User,on_delete=models.CASCADE)
-    description = models.CharField(max_length=300,)
+    users = models.ManyToManyField(User)
+    description = models.CharField(max_length=255)
     is_finished = models.BooleanField(default=False)
     author = models.CharField(max_length=20)
     github = models.CharField(max_length=20)

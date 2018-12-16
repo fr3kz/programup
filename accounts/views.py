@@ -30,7 +30,6 @@ def login(request):
 
 #function to reigtser new users
 def register(request):
-    #TODO: add forms to register function
     if request.method == 'POST':
         name = request.POST['name']
         username = request.POST['username']
@@ -56,7 +55,7 @@ def edit(request,user_id):
     if request.method == 'POST':
         user = User.objects.get(user_id=user_id)
         github = request.POST['github']
-        #profile_image = image0
+        #profile_image = image
         user.profile.github = github
         user.profile.save()
         return redirect('')

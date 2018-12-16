@@ -138,3 +138,5 @@ MESSAGE_TAGS = {
     messages.ERROR: 'danger',
     messages.SUCCESS: 'custom suc mes'
 }
+
+
