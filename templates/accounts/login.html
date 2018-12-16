@@ -1,1 +1,6 @@
-login page
+  {% include 'partials/_alerts.html' %}
+<form method="post" action="{% url 'login' %}" novalidate>
+  {% csrf_token %}
+  {{form}}
+  <button type="submit">Submit</button>
+</form>

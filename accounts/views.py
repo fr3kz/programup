@@ -1,31 +1,37 @@
 from django.shortcuts import render,redirect
 from django.contrib import auth,messages
 from django.contrib.auth.models import User
+#own apps
 from .models import Profile
+from .forms import LoginForm
 
 
 
 #function to authenticate users by username
 def login(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+        form = LoginForm(request.POST)
+        if form.is_valid():     
+            username = request.POST['username']
+            password = request.POST['password']
 
-        user = auth.authenticate(request, username=username,password=password)
+            user = auth.authenticate(request, username=username,password=password)
 
-        if user is not None:
-            auth.login(request,user)
-            messages.info(request,'Pomyslne logowanie')
-            return redirect('')
-        else:
-            messages.error(request,'Niepoprawne dane')
-            return redirect('login')
-    return render(request,'accounts/login.html')
+            if user is not None:
+                auth.login(request,user)
+                messages.info(request,'Pomyslne logowanie')
+                return redirect('register')
+            else:
+                messages.error(request,'Niepoprawne dane')
+                return redirect('login')
+    else:
+        form = LoginForm()        
+    return render(request,'accounts/login.html',{'forms':form})        
 
 #function to reigtser new users
 def register(request):
+    #TODO: add forms to register function
     if request.method == 'POST':
-        # TODO: handle register form
         name = request.POST['name']
         username = request.POST['username']
         email = request.POST['email']
