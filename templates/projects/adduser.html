@@ -1,0 +1,7 @@
+{% load static %}
+<script src="{% static 'jq.min.js'%}"></script>
+<script src="{% static 'ajax.js'%}"></script>
+{% csrf_token %}
+<input type="text" id="search" />
+{% include 'projects/aa.html' %}
+

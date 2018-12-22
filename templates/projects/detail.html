@@ -1,7 +1,6 @@
-deatail\
-{{project.title}}
-<form action="{% url 'detail' 1 %}" method='POST'>
-{% csrf_token %}
-<input type="text" name="user_id">
-<input type="submit" name="submit">
-</form> 
+project's detail
+<p>pr title {{project.title}}</p>
+pr author{{ project.author}}<br>
+{% for user in users%}
+<p>pr users{{ user.username}}</p>
+{% endfor%}

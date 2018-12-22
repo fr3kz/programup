@@ -1,12 +1,15 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,render_to_response
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from django.core.files.storage import FileSystemStorage
 from django.contrib import auth
 
+
 #own
 from .models import (PLanguage,Project)
+from contacts.models import Contact
 
 def index(request):
     pinned_posts = Project.objects.filter(is_pinned=True)
@@ -51,23 +54,24 @@ def create(request):
     return render(request,'projects/create.html')
 
 def detail(request,project_id):
-    #get particular project from given id
-    project = Project.objects.get(pk=1)
-
-    context = {
-        'project':project,
-    }
-
-    return render(request, 'projects/detail.html',context)
-
-
-# TODO: develop fninal function & this is working :O
-def add_user(request,project_id):
-    project = Project.objects.get(pk=1)
+    
     if request.method == 'POST':
-        usr = request.POST['user_id']
-        userr = request.user
-        
-        project.users.add(userr)
-        project.save()
-        return redirect('index')
+        user = request.user
+        project = Project.objects.get(pk=project_id)
+        message = request.POST['message']
+        contact = Contact(user=user,project=project,message=message)
+        contact.save()
+        return redirect('detail', project_id)
+
+    else:
+        project = Project.objects.get(pk=project_id)
+        users = User.objects.filter(project=project)
+        context = {
+            'project':project,
+            'users':users
+        }
+
+        return render(request, 'projects/detail.html',context)
+#TODO:DASHBOARD
+def dashboard(request):
+    return
