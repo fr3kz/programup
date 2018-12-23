@@ -2,7 +2,6 @@ from django.shortcuts import render,redirect,render_to_response
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt
 from django.core.files.storage import FileSystemStorage
 from django.contrib import auth
 
@@ -54,7 +53,6 @@ def create(request):
     return render(request,'projects/create.html')
 
 def detail(request,project_id):
-    
     if request.method == 'POST':
         user = request.user
         project = Project.objects.get(pk=project_id)
@@ -73,5 +71,32 @@ def detail(request,project_id):
 
         return render(request, 'projects/detail.html',context)
 #TODO:DASHBOARD
-def dashboard(request):
-    return
+
+@login_required(login_url="../../accounts/login")
+def dashboard(request,project_id):
+
+    user = request.user
+    username = user.username
+
+    project_author = Project.objects.filter(author=username)  
+    project = Project.objects.get(pk=project_id)
+
+    if project in project_author:
+       #auth user is author, can save it
+       #TODO: edit project
+       pass
+    else:
+        return redirect('index')     
+
+    context = {
+        'project':project
+    }   
+    return render(request,'projects/dashboard.html',context)
+
+#TODO: finish this function
+@login_required(login_url="../../accounts/login")
+def project_dashboard(request):
+    user = request.user
+    user_projects = Project.objects.filter(users=user)
+    print(user_projects)
+    return render(request,'projects/pr_dash.html')
