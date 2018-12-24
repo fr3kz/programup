@@ -70,7 +70,6 @@ def detail(request,project_id):
         }
 
         return render(request, 'projects/detail.html',context)
-#TODO:DASHBOARD
 
 @login_required(login_url="../../accounts/login")
 def dashboard(request,project_id):
@@ -81,22 +80,62 @@ def dashboard(request,project_id):
     project_author = Project.objects.filter(author=username)  
     project = Project.objects.get(pk=project_id)
 
+    #get users which apply to this project
+    request_users = Contact.objects.filter(project=project)
+
     if project in project_author:
        #auth user is author, can save it
-       #TODO: edit project
-       pass
+       if request.method == 'POST':
+          title = request.POST['title']
+          desc  = request.POST['desc']
+          github = request.POST['github']
+
+          if title:
+              project.title = title
+          elif desc:
+              project.desc = desc    
+          elif github:
+              project.github = github
+          elif request.FILES['thumbnail']:
+              thumbnail = request.FILES['thumbnail']
+              fs = FileSystemStorage('media/images/projects')
+              fs.save(thumbnail.name,thumbnail)
+              project.thumbnail = 'images/projects/'+ thumbnail.name    
+          project.save()
+
     else:
         return redirect('index')     
 
     context = {
-        'project':project
+        'project':project,
+        'request_users': request_users,
     }   
     return render(request,'projects/dashboard.html',context)
 
-#TODO: finish this function
 @login_required(login_url="../../accounts/login")
 def project_dashboard(request):
     user = request.user
     user_projects = Project.objects.filter(users=user)
-    print(user_projects)
-    return render(request,'projects/pr_dash.html')
+    
+    context = {
+        'user_projects':user_projects
+    }
+    return render(request,'projects/pr_dash.html',context)
+
+def add_user(request,project_id):
+    user_id = request.POST['user_id']
+    project = Project.objects.get(pk=project_id)
+    if user_id:
+        new_user = User.objects.get(pk=user_id)
+        # remove from contact
+        project.users.add(new_user)
+    return redirect('dash',project_id)
+
+def remove_user(request,project_id):
+    user_id = request.POST['user_id']
+    project = Project.objects.get(pk=project_id)
+    if user_id:
+        new_user = User.objects.get(pk=user_id)
+        #TODO remove form contact
+        project.users.remove(new_user)
+    return redirect('dash',project_id)
