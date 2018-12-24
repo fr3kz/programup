@@ -52,13 +52,19 @@ def create(request):
      
     return render(request,'projects/create.html')
 
+@login_required(login_url="../../accounts/register")
 def detail(request,project_id):
     if request.method == 'POST':
         user = request.user
         project = Project.objects.get(pk=project_id)
         message = request.POST['message']
-        contact = Contact(user=user,project=project,message=message)
-        contact.save()
+        c  = Contact.objects.get(project=project,user=user)
+        if c:       
+            contact = Contact(user=user,project=project,message=message)
+            contact.save()
+        else:
+            messages.error(request,'Juz aplikowales')
+            pass    
         return redirect('detail', project_id)
 
     else:
@@ -127,8 +133,8 @@ def add_user(request,project_id):
     project = Project.objects.get(pk=project_id)
     if user_id:
         new_user = User.objects.get(pk=user_id)
-        # remove from contact
         project.users.add(new_user)
+        Contact.objects.get(project=project,user=new_user).delete()
     return redirect('dash',project_id)
 
 def remove_user(request,project_id):
@@ -136,6 +142,6 @@ def remove_user(request,project_id):
     project = Project.objects.get(pk=project_id)
     if user_id:
         new_user = User.objects.get(pk=user_id)
-        #TODO remove form contact
+        Contact.objects.get(project=project,user=new_user).delete()
         project.users.remove(new_user)
     return redirect('dash',project_id)
