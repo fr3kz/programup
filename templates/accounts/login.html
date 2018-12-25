@@ -1,7 +1,28 @@
-  {% include 'partials/_alerts.html' %}
-<form method="post" action="{% url 'login' %}" novalidate>
-  {% csrf_token %}
-  <input type="text" name="username"/>
-  <input type="password" name="password"/>
-  <button type="submit">Submit</button>
-</form>
+ {% load static%}
+ {% include 'partials/_alerts.html' %}
+<html>
+
+<head>
+	<title>Login Form Design</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+
+	<body>
+		<div class="loginbox">
+			<img src="{% static 'avatar.png' %}" class="avatar">
+			<h1>Login Page</h1>
+			<form method="post" action="{% url 'login' %}" novalidate>
+				{% csrf_token %}
+				<p>Username</p>
+				<input type="text" name="username" />
+				<p>Haslo</p>
+				<input type="password" name="password" />
+				<input type="submit"></input>
+			</form>
+			<a href="{% url 'register' %}">Nie masz konta?</a>
+
+		</div>
+
+	</body>
+</head>
+
+</html>

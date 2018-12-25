@@ -3,7 +3,6 @@ from django.contrib import auth,messages
 from django.contrib.auth.models import User
 #own apps
 from .models import Profile
-from .forms import LoginForm
 
 
 
@@ -32,6 +31,7 @@ def register(request):
         email = request.POST['email']
         password = request.POST['password']
         github = request.POST['github']
+        #TODO image handler
         profile_image = request.POST['image']
 
         if User.objects.filter(username=username).exists():
@@ -46,13 +46,3 @@ def register(request):
             return redirect('')
     return render(request,'accounts/register.html')
 
-#function to change user or profile attributes
-def edit(request,user_id):
-    if request.method == 'POST':
-        user = User.objects.get(user_id=user_id)
-        github = request.POST['github']
-        #profile_image = image
-        user.profile.github = github
-        user.profile.save()
-        return redirect('')
-    return 

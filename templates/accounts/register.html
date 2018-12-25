@@ -1,1 +1,34 @@
-register
+ {% load static%}
+ {% include 'partials/_alerts.html' %}
+<html>
+
+<head>
+	<title>Login Form Design</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+	<body>
+		<div class="loginbox">
+			<img src="{% static 'avatar.png' %}" class="avatar">
+			<h1>Register Page</h1>
+			<form method="post" action="{% url 'login' %}" >
+				{% csrf_token %}
+				<p>Username</p>
+				<input type="text" name="username" />
+                <p>Name</p>
+				<input type="text" name="name" />
+                <p>Email</p>
+				<input type="text" name="email" />
+                <p>Github</p>
+				<input type="text" name="github" />
+                <p>Profile image</p>
+				<input type="files" name="image" />
+				<p>Haslo</p>
+				<input type="password" name="password" />
+				<input type="submit"></input>
+			</form>
+
+		</div>
+
+	</body>
+</head>
+
+</html>
