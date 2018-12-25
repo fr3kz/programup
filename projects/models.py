@@ -9,7 +9,7 @@ class PLanguage(models.Model):
 
 class Project(models.Model):
     thumbnail = models.ImageField(upload_to='images/projects')
-    users = models.ManyToManyField(User)
+    users = models.ManyToManyField(User,related_name='users')
     description = models.CharField(max_length=255)
     is_finished = models.BooleanField(default=False)
     author = models.CharField(max_length=20)

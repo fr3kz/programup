@@ -7,7 +7,7 @@ from django.contrib import auth
 
 
 from rest_framework import viewsets
-from .serializers import ProjectSerializer
+from .serializers import (ProjectSerializer,LanguageSerializer)
 
 #own
 from .models import (PLanguage,Project)
@@ -156,3 +156,8 @@ def remove_user(request,project_id):
 class IndexApi(viewsets.ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
+
+class PLanguageApi(viewsets.ModelViewSet):
+    queryset = PLanguage.objects.all()
+    serializer_class = LanguageSerializer
+

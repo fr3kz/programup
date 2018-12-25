@@ -4,6 +4,7 @@ from rest_framework import routers
 
 router = routers.DefaultRouter()
 router.register('projects',views.IndexApi)
+router.register('languages',views.PLanguageApi)
 
 urlpatterns = [
     path('create/', views.create,name='create'),
