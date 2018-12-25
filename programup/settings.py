@@ -42,6 +42,9 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'projects.apps.ProjectsConfig',
     'contacts.apps.ContactsConfig',
+
+    #other apps
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

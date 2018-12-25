@@ -9,9 +9,7 @@ from .forms import LoginForm
 
 #function to authenticate users by username
 def login(request):
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():     
+    if request.method == 'POST': 
             username = request.POST['username']
             password = request.POST['password']
 
@@ -23,10 +21,8 @@ def login(request):
                 return redirect('register')
             else:
                 messages.error(request,'Niepoprawne dane')
-                return redirect('login')
-    else:
-        form = LoginForm()        
-    return render(request,'accounts/login.html',{'forms':form})        
+                return redirect('login')    
+    return render(request,'accounts/login.html')        
 
 #function to reigtser new users
 def register(request):

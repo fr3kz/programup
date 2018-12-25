@@ -6,11 +6,15 @@ from django.core.files.storage import FileSystemStorage
 from django.contrib import auth
 
 
+from rest_framework import viewsets
+from .serializers import ProjectSerializer
+
 #own
 from .models import (PLanguage,Project)
 from contacts.models import Contact
 
 def index(request):
+    #TODO rest api
     pinned_posts = Project.objects.filter(is_pinned=True)
     projects_python = Project.objects.filter(language__name='Python')
     projects_php = Project.objects.filter(language__name='Php')
@@ -62,6 +66,7 @@ def detail(request,project_id):
         if c:       
             contact = Contact(user=user,project=project,message=message)
             contact.save()
+            #TODO send email to admin 
         else:
             messages.error(request,'Juz aplikowales')
             pass    
@@ -145,3 +150,9 @@ def remove_user(request,project_id):
         Contact.objects.get(project=project,user=new_user).delete()
         project.users.remove(new_user)
     return redirect('dash',project_id)
+
+#api
+
+class IndexApi(viewsets.ModelViewSet):
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
