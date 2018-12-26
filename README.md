@@ -9,3 +9,5 @@ To run locally:
   
 Used extenstions
 <p>django rest framework</p>
+
+Frontend needed 
